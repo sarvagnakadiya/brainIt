@@ -26,8 +26,10 @@ class BrainIt {
   private highScoreFile: string;
   private lastFeedback: string;
   private timerInterval: NodeJS.Timeout | null;
+  private questionCount: number;
+  private gameDuration: number;
 
-  constructor() {
+  constructor(duration: number = 60000) {
     this.rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -38,32 +40,54 @@ class BrainIt {
     this.highScoreFile = path.join(os.homedir(), '.brainit-highscore.json');
     this.lastFeedback = '';
     this.timerInterval = null;
+    this.questionCount = 0;
+    this.gameDuration = duration;
   }
 
   private generateQuestion(): { question: string; answer: number } {
-    const operations = ['+', '-', '*'];
+    // Skip division for first 3 questions
+    const operations = this.questionCount < 3 ? ['+', '-', '*'] : ['+', '-', '*', '/'];
     const operation = operations[Math.floor(Math.random() * operations.length)];
 
     let num1: number, num2: number, answer: number, question: string;
 
     switch (operation) {
       case '+':
-        num1 = Math.floor(Math.random() * 90) + 10; // 10-99
-        num2 = Math.floor(Math.random() * 90) + 10; // 10-99
+        // Medium range: 12-99 (avoid single digits on both sides)
+        num1 = Math.floor(Math.random() * 88) + 12;
+        num2 = Math.floor(Math.random() * 88) + 12;
         answer = num1 + num2;
         question = `${num1} + ${num2}`;
         break;
       case '-':
-        num1 = Math.floor(Math.random() * 90) + 10; // 10-99
-        num2 = Math.floor(Math.random() * num1); // Ensure positive result
+        // Range: 25-120, ensure meaningful subtraction
+        num1 = Math.floor(Math.random() * 96) + 25;
+        num2 = Math.floor(Math.random() * (num1 - 12)) + 12; // Avoid tiny subtractions
         answer = num1 - num2;
         question = `${num1} - ${num2}`;
         break;
       case '*':
-        num1 = Math.floor(Math.random() * 10) + 2; // 2-11
-        num2 = Math.floor(Math.random() * 10) + 2; // 2-11
+        // Avoid trivial multiplications, skip if both are single digits
+        const multiplyType = Math.random();
+        if (multiplyType < 0.6) {
+          // Two digit × single digit: 12-35 × 6-12
+          num1 = Math.floor(Math.random() * 24) + 12;
+          num2 = Math.floor(Math.random() * 7) + 6;
+        } else {
+          // Both medium: 11-20 × 6-12
+          num1 = Math.floor(Math.random() * 10) + 11;
+          num2 = Math.floor(Math.random() * 7) + 6;
+        }
         answer = num1 * num2;
         question = `${num1} × ${num2}`;
+        break;
+      case '/':
+        // Simple division: divisor 3-9 (max 9), always whole number results
+        num2 = Math.floor(Math.random() * 7) + 3; // Divisor: 3-9
+        const quotient = Math.floor(Math.random() * 18) + 5; // Answer: 5-22
+        num1 = quotient * num2; // Dividend
+        answer = quotient;
+        question = `${num1} / ${num2}`; // Use / instead of ÷ for clarity
         break;
       default:
         num1 = 0;
@@ -72,6 +96,7 @@ class BrainIt {
         question = '';
     }
 
+    this.questionCount++;
     return { question, answer };
   }
 
@@ -102,7 +127,7 @@ class BrainIt {
 
   private getSecondsLeft(): number {
     const timeElapsed = Date.now() - this.stats.startTime;
-    return Math.max(0, Math.ceil((60000 - timeElapsed) / 1000));
+    return Math.max(0, Math.ceil((this.gameDuration - timeElapsed) / 1000));
   }
 
   private displayGameScreen(): void {
@@ -167,7 +192,7 @@ class BrainIt {
       }
 
       const timeElapsed = Date.now() - this.stats.startTime;
-      if (timeElapsed >= 60000) {
+      if (timeElapsed >= this.gameDuration) {
         if (this.timerInterval) {
           clearInterval(this.timerInterval);
         }
@@ -184,7 +209,7 @@ class BrainIt {
     if (!this.gameActive) return;
 
     const timeElapsed = Date.now() - this.stats.startTime;
-    if (timeElapsed >= 60000) {
+    if (timeElapsed >= this.gameDuration) {
       this.endGame();
       return;
     }
@@ -267,12 +292,14 @@ class BrainIt {
     console.clear();
     cliCursor.show();
 
+    const durationSeconds = this.gameDuration / 1000;
+
     console.log(chalk.cyan('═══════════════════════════════════════════════════════'));
     console.log(chalk.bold.white('              🧠 BRAINIT - Mental Math Game'));
     console.log(chalk.cyan('═══════════════════════════════════════════════════════\n'));
     console.log(chalk.white('💡 Rules:'));
     console.log(chalk.white('   • Solve as many math problems as you can'));
-    console.log(chalk.white('   • You have 60 seconds'));
+    console.log(chalk.white(`   • You have ${durationSeconds} seconds`));
     console.log(chalk.white('   • Beat your high score!\n'));
 
     const highScore = await this.loadHighScore();
@@ -290,7 +317,25 @@ class BrainIt {
       this.askQuestion();
     });
   }
+
+  public async showHighScore(): Promise<void> {
+    const highScore = await this.loadHighScore();
+    console.log(chalk.yellow('🏆 Your High Score:'), chalk.bold.white(highScore.toString()));
+    process.exit(0);
+  }
 }
 
-const game = new BrainIt();
-game.start();
+// Parse command-line arguments
+const args = process.argv.slice(2);
+const command = args[0];
+
+if (command === 'highscore') {
+  const game = new BrainIt();
+  game.showHighScore();
+} else if (command === 'long') {
+  const game = new BrainIt(120000); // 2 minutes
+  game.start();
+} else {
+  const game = new BrainIt(); // 60 seconds (default)
+  game.start();
+}
