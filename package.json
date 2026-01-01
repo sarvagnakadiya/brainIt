@@ -2,6 +2,7 @@
   "name": "brainit",
   "version": "1.0.0",
   "description": "A fun terminal-based mental math game to fight brain rot - solve problems in 60 seconds!",
+  "type": "module",
   "main": "dist/index.js",
   "bin": {
     "brainit": "./dist/index.js"
@@ -18,16 +19,35 @@
     "terminal-game",
     "cli-game",
     "math-game",
-    "brain-game"
+    "brain-game",
+    "mental-arithmetic",
+    "brain-exercise",
+    "productivity"
   ],
   "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/brainit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/brainit/issues"
+  },
+  "homepage": "https://github.com/yourusername/brainit#readme",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
+    "@types/cli-cursor": "^2.1.0",
     "@types/node": "^25.0.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cli-cursor": "^5.0.0"
   }
 }

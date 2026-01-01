@@ -13,6 +13,12 @@ A fun terminal-based mental math game to keep your brain sharp and fight brain r
 
 ## Installation
 
+### Quick Start with npx (No Installation)
+
+```bash
+npx brainit
+```
+
 ### Global Installation (Recommended)
 
 ```bash
