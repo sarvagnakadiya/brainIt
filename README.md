@@ -1,140 +1,82 @@
 # 🧠 BrainIt
 
-A fun terminal-based mental math game to keep your brain sharp and fight brain rot! Perfect for developers who want a quick mental break with practical math skills.
+**Fight brain rot, one equation at a time.** 💪
 
-## Features
+A terminal-based mental math game for developers who'd rather do quick math than scroll TikTok during their coffee break. Train your brain while your code compiles!
 
-- **60-second rapid-fire math challenges** - Addition, subtraction, multiplication, and division
-- **Real-time countdown timer** - Live updating timer without interrupting your input
-- **High score tracking** - Beat your personal best
-- **Mental math difficulty** - Problems designed to be solved in your head (like 65 - 18, 84 / 7)
-- **Instant feedback** - Know immediately if you're right or wrong
-- **Accuracy tracking** - See your performance stats
-- **Multiple game modes** - Standard (60s) or Long (120s) mode
-- **Smart question generation** - Avoids trivial questions, division limited to max 10 divisor
-
-## Installation
-
-### Quick Start with npx (No Installation)
-
-```bash
-npx brainit
-```
-
-### Global Installation (Recommended)
+## ⚡ Quick Start
 
 ```bash
 npm install -g brainit
-```
-
-Then run anywhere:
-
-```bash
 brainit
 ```
 
-### Local Development
+That's it! No config, no setup, just pure mental math adrenaline.
+
+## 🎮 What You Get
+
+- **60-second sprint** - Beat the clock solving real mental math
+- **Live countdown** - Watch time tick without losing your input
+- **4 operations** - Addition, subtraction, multiplication, division
+- **Smart questions** - No baby math like 2+2 or 5×1
+- **High scores** - Flex on your past self
+- **2 game modes** - Standard (60s) or Long (120s) for masochists
+
+## 🕹️ Commands
 
 ```bash
-# Clone or navigate to the project
+brainit              # 60-second game
+brainit long         # 120-second game (hardcore mode)
+brainit highscore    # Check your best score
+```
+
+## 📖 The Rules
+
+**Time:**
+- Standard: 60 seconds ⏱️
+- Long mode: 120 seconds 🔥
+
+**Questions you'll see:**
+- **Addition**: `47 + 68` (range: 12-99)
+- **Subtraction**: `85 - 39` (range: 25-120)
+- **Multiplication**: `23 × 8` or `14 × 11` (no easy ones like 4×4)
+- **Division**: `72 / 9` (clean answers, divisor max 9)
+
+**Smart design:**
+- ❌ No trivial questions (bye bye 2+2)
+- ⏭️ First 3 questions skip division (warm up first!)
+- 💾 Auto-saves your high score to `~/.brainit-highscore.json`
+
+## 🛠️ Development
+
+```bash
+git clone https://github.com/yourusername/brainit.git
+cd brainit
 npm install
-
-# Run in development mode
-npm run dev
-
-# Or build and run
-npm run build
-npm start
+npm run dev    # Run with hot reload
+npm run build  # Compile TypeScript
 ```
 
-## Usage
+## 🤔 Why This Exists
 
-### Standard Mode (60 seconds)
+Your brain is getting soft from all that Stack Overflow copy-pasting. BrainIt brings back the mental math you used before calculators took over your life.
 
-```bash
-npx brainit
-# or
-brainit
-```
+**Use it for:**
+- 🧠 Quick brain warmup before deep work
+- ☕ Coffee break that's actually productive
+- 🏃 Mental sprints between compile times
+- 💪 Keeping your calculation skills sharp
 
-### Long Mode (120 seconds)
+**The hidden benefit:** You'll stop reaching for your calculator to figure out how many minutes are in 2.5 hours.
 
-```bash
-npx brainit long
-# or
-brainit long
-```
+## 📜 License
 
-### Check Your High Score
+MIT - Go wild, build something cool.
 
-```bash
-npx brainit highscore
-# or
-brainit highscore
-```
+## 🤝 Contributing
 
-The game will:
-1. Show you the rules and current high score
-2. Wait for you to press ENTER to start
-3. Give you 60 seconds (or 120s in long mode) to solve as many mental math problems as possible
-4. Show your final score and accuracy
-5. Save your high score automatically
+Found a bug? Want to add square roots? PRs welcome!
 
-## Game Rules
+---
 
-- Standard mode: **60 seconds** | Long mode: **120 seconds**
-- Questions include:
-  - **Addition**: 12-99 + 12-99 (e.g., 45 + 67)
-  - **Subtraction**: 25-120 - 12+ (e.g., 82 - 35)
-  - **Multiplication**: Two-digit × single-digit or medium ranges (e.g., 23 × 8, 14 × 11)
-  - **Division**: Whole number results only, divisor max 10 (e.g., 84 / 7)
-- No trivial questions (like 4 × 4 or 5 + 5)
-- Division questions skip the first 3 questions for a better start
-- Type your answer and press ENTER
-- Your high score is saved in `~/.brainit-highscore.json`
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run in development mode with auto-reload
-npm run dev
-
-# Build TypeScript to JavaScript
-npm run build
-
-# Run the built version
-npm start
-```
-
-## Publishing to NPM
-
-```bash
-# Build the project
-npm run build
-
-# Login to NPM (if not already)
-npm login
-
-# Publish
-npm publish
-```
-
-## Why BrainIt?
-
-As developers, we spend hours coding but rarely exercise our basic mental math skills. BrainIt helps you:
-
-- Practice mental arithmetic you actually use in daily life
-- Take productive micro-breaks during coding sessions
-- Build number sense and calculation speed
-- Have fun competing against yourself
-
-## License
-
-MIT
-
-## Contributing
-
-Feel free to open issues or submit PRs to make BrainIt even better!
+**Pro tip:** Set `alias math='brainit'` in your shell and feel like a genius every time you type it. 😎

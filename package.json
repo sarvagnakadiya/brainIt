@@ -1,6 +1,6 @@
 {
   "name": "brainit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A fun terminal-based mental math game to fight brain rot - solve problems in 60 seconds!",
   "type": "module",
   "main": "dist/index.js",
